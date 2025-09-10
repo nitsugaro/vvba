@@ -16,20 +16,19 @@ def main():
     utilidades.limpiarConsola()
 
     opciones = [
-        lambda: funciones.consultarSaldo(const.MOVIMIENTOS, numeroUsuario), # Opcion 1
-        lambda: funciones.realizarTransaccion(const.MOVIMIENTOS, numeroUsuario), # Opcion 2
-        lambda: funciones.verMovimientos(const.MOVIMIENTOS, numeroUsuario), # Opcion 3
-        lambda: funciones.creditos(), # Opcion 4
-        lambda: funciones.plazoFijo(), # Opcion 5
-        lambda: funciones.compraVentaDolar(const.MOVIMIENTOS, numeroUsuario), # Opcion 6
-        lambda: funciones.gastosClasificacion(), # Opcion 7
-        lambda: funciones.salir(const.USUARIOSCONTRASENAS, numeroUsuario) # Opcion 8
+        lambda: funciones.realizarTransaccion(const.MOVIMIENTOS, numeroUsuario), # Opcion 1
+        lambda: funciones.verMovimientos(const.MOVIMIENTOS, numeroUsuario), # Opcion 2
+        lambda: funciones.creditos(), # Opcion 3
+        lambda: funciones.plazoFijo(), # Opcion 4
+        lambda: funciones.compraVentaDolar(const.MOVIMIENTOS, numeroUsuario), # Opcion 5
+        lambda: funciones.gastosClasificacion(), # Opcion 6
+        lambda: funciones.salir(const.USUARIOSCONTRASENAS, numeroUsuario) # Opcion 7
         ]
 
     opcion = 0
 
-    while opcion != 8:
-        opcion = funciones.menuPrincipal(opciones, numeroUsuario, const.USUARIOSCONTRASENAS)
+    while opcion != 7:
+        opcion = funciones.menuPrincipal(opciones, numeroUsuario, const.USUARIOSCONTRASENAS, const.MOVIMIENTOS)
         opciones[opcion - 1]()
         
 

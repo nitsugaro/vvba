@@ -19,7 +19,7 @@ def crearUsuario(matrizUsuarios, matrizMovimientos):
     contraseñaUsuario = input("Cree una contraseña (Mayor a 5 caracteres y con almenos un digito): ")
     validaciones.validarContraseña(contraseñaUsuario, matrizUsuarios)
 
-    matrizMovimientos.append([[0], [], [], [0], []])
+    matrizMovimientos.append([[0], [0], [], [], []])
     # print(matrizUsuarios)
     # print(matrizMovimientos)
     input("Usuario creado con éxito. Presione enter para continuar ... ")
@@ -35,12 +35,15 @@ def menuInicio():
         else:
             return opcionSeleccionada
 
-def menuPrincipal(lstOpciones, intId, matriz):
+def menuPrincipal(lstOpciones, intId, matrizUsuarios, matrizMovimientos):
     while True:
         try:
+            saldoPesos = calcularSaldo(matrizMovimientos, intId, 0)
+            saldoDolares = calcularSaldo(matrizMovimientos, intId, 1)
+
             utilidades.limpiarConsola()
-            print(f"Bienvenido/a {matriz[1][intId]} al banco\n" \
-            "1. Consultar saldo \n2. Realizar transaccion \n3. Ver movimientos \n4. Creditos \n5. Plazo fijo \n6. Compra/Venta Dolar \n7. Gastos por clasificacion \n8. Salir")
+            print(f"Bienvenido/a {matrizUsuarios[1][intId]} al banco\nSaldo pesos: {saldoPesos} y Saldo dolares: {saldoDolares}\n" \
+            "1. Realizar transaccion \n2. Ver movimientos \n3. Creditos \n4. Plazo fijo \n5. Compra/Venta Dolar \n6. Gastos por clasificacion \n7. Salir")
 
             opcion = int(input("Elija una opción: "))
             opcion = validaciones.validarOpcionMenuPrincipal(opcion, lstOpciones)
@@ -50,15 +53,13 @@ def menuPrincipal(lstOpciones, intId, matriz):
             utilidades.limpiarConsola()
             return opcion
         
-def consultarSaldo(matrizMovimientos, intId):
+def calcularSaldo(matrizMovimientos, intId, intPesosODolares):
     saldo = 0
 
-    for i in matrizMovimientos[intId][0]:
+    for i in matrizMovimientos[intId][intPesosODolares]:
         saldo += i
 
-    print(f"Tu saldo es de {saldo}$.")
-
-    input("Presione enter para continuar ... ")
+    return saldo
 
 def realizarTransaccion(matrizMovimientos, intId):
     try: 
@@ -71,12 +72,12 @@ def realizarTransaccion(matrizMovimientos, intId):
         print("Error. Ingrese un numero")
 
 def verMovimientos(matrizMovimientos, intId):
-    largo = len(matrizMovimientos[intId][0]) - 5
+    inicio = len(matrizMovimientos[intId][0]) - 5
 
-    if largo < 0:
-        largo = 0
+    if inicio < 0:
+        inicio = 0
 
-    for i in range(largo, len(matrizMovimientos[intId][0])):
+    for i in range(inicio, len(matrizMovimientos[intId][0])):
         print(f"Gasto: {matrizMovimientos[intId][0][i]} corresponde al tipo de gasto: {matrizMovimientos[intId][4][i]}")
 
     input("Presione enter para continuar ... ")
@@ -90,16 +91,9 @@ def plazoFijo():
 def compraVentaDolar(matrizMovimientos, intId):
     compraDolar = 1400
     ventaDolar = 1350
-    saldoDolar = 0
-    saldo = 0
 
-    for i in matrizMovimientos[intId][0]:
-        saldo += i
-
-    for i in matrizMovimientos[intId][3]:
-        saldoDolar += i
-
-    print(f"Actualmente tiene {saldoDolar} dolares.")
+    saldo = calcularSaldo(matrizMovimientos, intId, 0)
+    saldoDolar = calcularSaldo(matrizMovimientos, intId, 1)
 
     print(f"La cotizacion del dolar para comprar es {compraDolar} y para vender es {ventaDolar}.")
 
@@ -114,7 +108,7 @@ def compraVentaDolar(matrizMovimientos, intId):
         siONo = input(f"{montoDolar} dolares equivalen a {montoPesos} pesos. Desea continuar con la operacion? (Escriba S o N): ").upper().strip()
 
         if siONo == "S":
-            validaciones.validarTransaccion(matrizMovimientos, intId, montoPesos, montoDolar, saldo, 3, 0)
+            validaciones.validarTransaccion(matrizMovimientos, intId, montoPesos, montoDolar, saldo, 1, 0)
     elif compraOVenta == "venta":
         montoDolar = float(input("Cuantos dolares quiere vender: "))
         montoDolar = validaciones.validarNumeroPositivo(montoDolar)
@@ -124,7 +118,7 @@ def compraVentaDolar(matrizMovimientos, intId):
         siONo = input(f"{montoDolar} dolares equivalen a {montoPesos} pesos. Desea continuar con la operacion? (Escriba S o N): ").upper().strip()
 
         if siONo == "S":
-            validaciones.validarTransaccion(matrizMovimientos, intId, montoDolar, montoPesos, saldoDolar, 0, 3)
+            validaciones.validarTransaccion(matrizMovimientos, intId, montoDolar, montoPesos, saldoDolar, 0, 1)
 
 def gastosClasificacion():
     print("...")

@@ -21,13 +21,15 @@ def main():
         lambda: funciones.creditos(), # Opcion 3
         lambda: funciones.plazoFijo(), # Opcion 4
         lambda: funciones.compraVentaDolar(const.MOVIMIENTOS, numeroUsuario), # Opcion 5
-        lambda: funciones.gastosClasificacion(), # Opcion 6
+        lambda: funciones.gastosClasificacion(const.MOVIMIENTOS, numeroUsuario, const.TIPOCATEGORIA), # Opcion 6
         lambda: funciones.salir(const.USUARIOSCONTRASENAS, numeroUsuario) # Opcion 7
         ]
 
     opcion = 0
 
-    while opcion != 7:
+    largoOpciones = len(opciones)
+
+    while opcion != largoOpciones:
         opcion = funciones.menuPrincipal(opciones, numeroUsuario, const.USUARIOSCONTRASENAS, const.MOVIMIENTOS)
         opciones[opcion - 1]()
         

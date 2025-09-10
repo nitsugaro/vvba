@@ -2,6 +2,7 @@ import validaciones, utilidades
 
 def iniciarSesion(matriz):
     while True: 
+        print("Usuario de prueba: usuario = Ana y contraseña = Pass123!")
         usuario = input("Ingrese su nombre de usuario: ")
         contraseña = input("Ingrese su contraseña: ")
         for i in range(len(matriz[0])):
@@ -64,7 +65,7 @@ def calcularSaldo(matrizMovimientos, intId, intPesosODolares):
 def realizarTransaccion(matrizMovimientos, intId):
     try: 
         transaccion = float(input("Ingrese la cantidad de dinero: "))
-        tipoGasto = input("Ingrese el tipo de gasto: ")
+        tipoGasto = input("Ingrese el tipo de gasto (Sueldo, Deposito, Otros, Servicio, Gastos, Deudas, Ahorros): ").capitalize()
 
         matrizMovimientos[intId][0].append(transaccion)
         matrizMovimientos[intId][4].append(tipoGasto)
@@ -120,8 +121,18 @@ def compraVentaDolar(matrizMovimientos, intId):
         if siONo == "S":
             validaciones.validarTransaccion(matrizMovimientos, intId, montoDolar, montoPesos, saldoDolar, 0, 1)
 
-def gastosClasificacion():
-    print("...")
+def gastosClasificacion(matrizMovimientos, intId, lstCategoria):
+    saldo = 0
+    movimientos = matrizMovimientos[intId][0]  
+    categorias = matrizMovimientos[intId][4]
+
+    for i in range(len(categorias)):
+        for j in range(len(lstCategoria)):
+            if categorias[i] == lstCategoria[j]:
+                saldo += movimientos[i]
+        print(f"{categorias[i]}: {saldo}")
+        saldo = 0
+    input("Presione enter para continuar ... ")
 
 def salir(matrizUsuario, intNum):
     print(f"Muchas Gracias {matrizUsuario[1][intNum]} por usar nuestro programa.")

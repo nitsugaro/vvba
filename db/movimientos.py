@@ -8,7 +8,10 @@ TIPOS_OPERACIONES = [
     "Deposito",
     "Gastos",
     "Servicio",
-    "Deudas"
+    "Deudas",
+    "Ahorros",
+    "Deudas",
+    "Otros"
 ]
 
 # Cada usuario tendrá [movimientos, tenencia dólar, plazo fijo, crédito, tipo de gasto]

@@ -1,3 +1,16 @@
+INDICE_PESOS = 0
+INDICE_DOLAR = 1
+INDICE_PLAZO_FIJO = 2
+INDICE_CREDITO = 3
+INDICE_TIPO_OPERACION = 4
+
+TIPOS_OPERACIONES = [
+    "Deposito",
+    "Gastos",
+    "Servicio",
+    "Deudas"
+]
+
 # Cada usuario tendrá [movimientos, tenencia dólar, plazo fijo, crédito, tipo de gasto]
 MOVIMIENTOS = [
     [[1000, -200, -500], [100], [], [], ["Deposito", "Gastos", "Servicio"]],  # Usuario 0
@@ -7,4 +20,9 @@ MOVIMIENTOS = [
     [[1500, -200, -100], [150], [], [], ["Deposito", "Deudas", "Servicio"]],  # Usuario 4
 ]
 
-TIPOCATEGORIA = ["Sueldo", "Deposito", "Otros", "Servicio", "Gastos", "Deudas", "Ahorros"]
+def crearMovimientos():
+    MOVIMIENTOS.append([[0], [0], [], [], []])
+
+def operacionMonto(indiceUsuario, monto, tipoOperacion):
+    MOVIMIENTOS[indiceUsuario][INDICE_PESOS].append(monto)
+    MOVIMIENTOS[indiceUsuario][INDICE_TIPO_OPERACION].append(tipoOperacion)

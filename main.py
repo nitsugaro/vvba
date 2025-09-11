@@ -1,37 +1,44 @@
 import funciones, const, utilidades
 
+
 def main():
     while True:
         utilidades.limpiarConsola()
-        crearUsuaOIniciarSesion = funciones.menuInicio()
+        opcionPrincipal = funciones.menuInicio()
         
-        if crearUsuaOIniciarSesion == 1:
-            utilidades.limpiarConsola()
-            numeroUsuario = funciones.iniciarSesion(const.USUARIOSCONTRASENAS)
+        utilidades.limpiarConsola()
+        if opcionPrincipal == 0:
+            numeroUsuario = funciones.iniciarSesion()
             break
+        elif opcionPrincipal == 1:
+            funciones.crearUsuario()
         else:
-            utilidades.limpiarConsola()
-            funciones.crearUsuario(const.USUARIOSCONTRASENAS, const.MOVIMIENTOS)
+            funciones.listarUsuario()
 
     utilidades.limpiarConsola()
-
     opciones = [
-        lambda: funciones.realizarTransaccion(const.MOVIMIENTOS, numeroUsuario), # Opcion 1
-        lambda: funciones.verMovimientos(const.MOVIMIENTOS, numeroUsuario), # Opcion 2
+        lambda: funciones.realizarOperacion(numeroUsuario), # Opcion 1
+        lambda: funciones.verMovimientos(numeroUsuario), # Opcion 2
         lambda: funciones.creditos(), # Opcion 3
         lambda: funciones.plazoFijo(), # Opcion 4
-        lambda: funciones.compraVentaDolar(const.MOVIMIENTOS, numeroUsuario), # Opcion 5
-        lambda: funciones.gastosClasificacion(const.MOVIMIENTOS, numeroUsuario, const.TIPOCATEGORIA), # Opcion 6
-        lambda: funciones.salir(const.USUARIOSCONTRASENAS, numeroUsuario) # Opcion 7
+        lambda: funciones.compraVentaDolar(numeroUsuario), # Opcion 5
+        lambda: funciones.gastosClasificacion(numeroUsuario, const.TIPOCATEGORIA), # Opcion 6
+        lambda: funciones.salir(numeroUsuario) # Opcion 7
         ]
 
     opcion = 0
 
-    largoOpciones = len(opciones)
+    largoOpciones = len(opciones) - 1
 
     while opcion != largoOpciones:
-        opcion = funciones.menuPrincipal(opciones, numeroUsuario, const.USUARIOSCONTRASENAS, const.MOVIMIENTOS)
-        opciones[opcion - 1]()
-        
+        opcion = funciones.menuPrincipal(numeroUsuario)
+        utilidades.limpiarConsola()
+        opciones[opcion]()
+        utilidades.limpiarConsola()
 
-main()
+    
+
+
+
+if __name__ == "__main__":
+    main()

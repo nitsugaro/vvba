@@ -71,7 +71,7 @@ Se encarga de validaciones de entradas:
 
 ### Conclusión
 
-El proyecto Virtual Bank es una simulación de un sistema bancario virtual desarrollado en Python.
+El proyecto VVBA es una simulación de un sistema bancario virtual desarrollado en Python.
 Integra múltiples módulos (db, funciones, utilidades, validaciones, const, main) que trabajan de manera conjunta para ofrecer una experiencia de usuario completa, desde la creación y gestión de cuentas hasta la realización de operaciones financieras como depósitos, gastos y compra/venta de dólares.
 
 ### Ejecutar

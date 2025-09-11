@@ -26,7 +26,7 @@ Aquí se simulan las “bases de datos” del sistema.
 
 #### 📌 db.movimientos
 
-- MOVIMIENTOS: matriz de operaciones por usuario (referencia a const).
+- MOVIMIENTOS: matriz de operaciones por usuario (referencia a db/movimientos).
 - TIPOS_OPERACIONES: lista de tipos de operaciones válidas (Depósito, Gastos, Servicio, Deuda, etc.).
 - crearMovimientos() → inicializa la estructura de movimientos para un nuevo usuario.
 - operacionMonto(intId, monto, tipoOperacion) → registra en MOVIMIENTOS el monto y tipo de gasto/ingreso.
@@ -72,7 +72,7 @@ Se encarga de validaciones de entradas:
 ### Conclusión
 
 El proyecto VVBA es una simulación de un sistema bancario virtual desarrollado en Python.
-Integra múltiples módulos (db, funciones, utilidades, validaciones, const, main) que trabajan de manera conjunta para ofrecer una experiencia de usuario completa, desde la creación y gestión de cuentas hasta la realización de operaciones financieras como depósitos, gastos y compra/venta de dólares.
+Integra múltiples módulos (db, funciones, utilidades, validaciones, main) que trabajan de manera conjunta para ofrecer una experiencia de usuario completa, desde la creación y gestión de cuentas hasta la realización de operaciones financieras como depósitos, gastos y compra/venta de dólares.
 
 ### Ejecutar
 

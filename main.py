@@ -1,4 +1,6 @@
-import funciones, const, utilidades
+import db.movimientos
+import funciones, utilidades
+import db
 
 
 def main():
@@ -22,7 +24,7 @@ def main():
         lambda: funciones.creditos(), # Opcion 3
         lambda: funciones.plazoFijo(), # Opcion 4
         lambda: funciones.compraVentaDolar(numeroUsuario), # Opcion 5
-        lambda: funciones.gastosClasificacion(numeroUsuario, const.TIPOCATEGORIA), # Opcion 6
+        lambda: funciones.gastosClasificacion(numeroUsuario, db.movimientos.TIPOS_OPERACIONES), # Opcion 6
         lambda: funciones.salir(numeroUsuario) # Opcion 7
         ]
 

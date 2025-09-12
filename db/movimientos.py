@@ -24,7 +24,7 @@ MOVIMIENTOS = [
 ]
 
 def crearMovimientos():
-    MOVIMIENTOS.append([[0], [0], [], [], []])
+    MOVIMIENTOS.append([[]] * 5)
 
 def operacionMonto(indiceUsuario, monto, tipoOperacion):
     MOVIMIENTOS[indiceUsuario][INDICE_PESOS].append(monto)

@@ -24,6 +24,7 @@ def crearUsuario():
 
     nombreUsuario = input("Cree un nombre de usuario: ")
     nombreUsuario = validaciones.validarNombreUsuario(nombreUsuario)
+    nombreUsuario = validaciones.validarNuevoUsuario(nombreUsuario)
 
     contraseñaUsuario = input("Cree una contraseña (Mayor a 5 caracteres y con almenos un digito): ")
     contraseñaUsuario = validaciones.validarContraseña(contraseñaUsuario)
@@ -46,7 +47,6 @@ def menuPrincipal(intId):
             ["Realizar operación", "Ver movimientos", "Creditos", "Plazo fijo", "Compra/Venta Dolar", "Gastos por clasificacion", "Salir"],
             f"Bienvenido/a {db.usuarios.obtenerNombreUsuario(intId)} al Banco VVBA (Vanguardia Virtual del Banco Argentino)\nSaldo pesos: {saldoPesos}$ y Saldo dolares: ${saldoDolares}: "
         )
-        
         
 def calcularSaldo(matrizMovimientos, intId, intPesosODolares):
     saldo = 0

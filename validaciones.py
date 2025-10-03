@@ -36,3 +36,12 @@ def validarTransaccion(matrizMovimientos, intId, floatMonto1, floatMonto2, float
         matrizMovimientos[intId][intNum2].append(-floatMonto1)
 
         input("Operacion realizada con exito. Presione enter para continuar ... ")
+
+def validarNuevoUsuario(strUsuario):
+    while True:
+        if not strUsuario.isalnum():
+            print("Error, el usuario no debe estar vacio y no debe tener espacios")
+            strUsuario = input("Ingrese otro usuario: ")
+        else:
+            break
+    return strUsuario

@@ -5,6 +5,7 @@ import db
 import random
 
 def iniciarSesion():
+    global usuario
     while True: 
         usuario = input("Ingrese su nombre de usuario: ")
         clave = input("Ingrese su contraseña: ")
@@ -134,11 +135,14 @@ def listarUsuario():
     usuarios = db.usuarios.obtenerUsuarios()
     usuariosFiltro = [nombre for nombre in usuarios if nombre.lower().startswith(partNombre.lower()) ]
 
-    print("Usuarios encontrados")
-    for nombre in usuariosFiltro:
-        print(nombre)
-    input("Presione enter para continuar...")
-    
+    if usuariosFiltro:
+        for nombre in usuariosFiltro:
+            print("Usuarios encontrados")
+            print(nombre)
+            input("Presione enter para continuar...")
+    else:
+        print("No se encontraron usuarios")
+        input("Presione enter para continuar...")
 
-def salir(intNum):
-    print(f"Muchas Gracias {db.usuarios.obtenerNombreUsuario(intNum)} por usar nuestro programa.")
+def salir():
+    pass

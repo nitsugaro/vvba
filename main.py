@@ -25,7 +25,7 @@ def main():
         lambda: funciones.plazoFijo(), # Opcion 4
         lambda: funciones.compraVentaDolar(numeroUsuario), # Opcion 5
         lambda: funciones.gastosClasificacion(numeroUsuario, db.movimientos.TIPOS_OPERACIONES), # Opcion 6
-        lambda: funciones.salir(numeroUsuario) # Opcion 7
+        lambda: funciones.salir() # Opcion 7
         ]
 
     opcion = 0
@@ -37,10 +37,14 @@ def main():
         utilidades.limpiarConsola()
         opciones[opcion]()
         utilidades.limpiarConsola()
-
-    
-
-
+    else:
+        utilidades.limpiarConsola()
+        print(f"Muchas gracias {funciones.usuario} por usar nuestro programa!")
+        print("Saliendo, cerrando el programa...")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        utilidades.limpiarConsola()
+        print("Saliendo, cerrando el programa...")

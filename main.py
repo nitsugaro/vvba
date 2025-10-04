@@ -1,7 +1,5 @@
 import db.movimientos
 import funciones, utilidades
-import db
-
 
 def main():
     while True:

@@ -40,7 +40,7 @@ def validarTransaccion(matrizMovimientos, intId, floatMonto1, floatMonto2, float
 def validarNuevoUsuario(strUsuario):
     while True:
         if not strUsuario.isalnum():
-            print("Error, el usuario no debe estar vacio y no debe tener espacios")
+            print("Error, el usuario no debe estar vacio y no debe tener espacios ni caracteres especiales")
             strUsuario = input("Ingrese otro usuario: ")
         else:
             break

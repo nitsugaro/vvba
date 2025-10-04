@@ -64,7 +64,7 @@ elegirOpcion(prompt, opciones, preText) → muestra menú numerado, valida input
 
 Se encarga de validaciones de entradas:
 
-- validarNombreUsuario(usuario) → impide duplicados.
+- validarNombreExiste(usuario) → impide duplicados.
 - validarContraseña(clave) → exige mínimo 5 caracteres y 1 número.
 - validarNumeroPositivo(num) → asegura que el monto sea > 0.
 - validarTransaccion(...) → verifica saldo suficiente antes de registrar la operación.

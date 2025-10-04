@@ -1,10 +1,9 @@
 import db.movimientos
 import db.usuarios
-import validaciones, utilidades
-import db
-import random
+import validaciones, utilidades, random
 
 def iniciarSesion():
+    global usuario
     while True: 
         usuario = input("Ingrese su nombre de usuario: ")
         clave = input("Ingrese su contraseña: ")
@@ -22,7 +21,10 @@ def crearUsuario():
     '''
 
     nombreUsuario = input("Cree un nombre de usuario: ")
-    nombreUsuario = validaciones.validarNombreUsuario(nombreUsuario)
+
+    #TODO: se puede hacer que valide el valor del nombre y que no exista previamente en una sola función
+    nombreUsuario = validaciones.validarNombreExiste(nombreUsuario)
+    nombreUsuario = validaciones.validarNuevoUsuario(nombreUsuario)
 
     contraseñaUsuario = input("Cree una contraseña (Mayor a 5 caracteres y con almenos un digito): ")
     contraseñaUsuario = validaciones.validarContraseña(contraseñaUsuario)
@@ -46,7 +48,6 @@ def menuPrincipal(intId):
             f"Bienvenido/a {db.usuarios.obtenerNombreUsuario(intId)} al Banco VVBA (Vanguardia Virtual del Banco Argentino)\nSaldo pesos: {saldoPesos}$ y Saldo dolares: ${saldoDolares}: "
         )
         
-        
 def calcularSaldo(matrizMovimientos, intId, intPesosODolares):
     saldo = 0
 
@@ -68,13 +69,14 @@ def realizarOperacion(intId):
         print("Error. Ingrese un numero")
 
 def verMovimientos(intId):
-    inicio = len(db.movimientos.MOVIMIENTOS[intId][0]) - 5
+    movimientosPrev = 5
+    inicio = len(db.movimientos.MOVIMIENTOS[intId][0]) - movimientosPrev
 
     if inicio < 0:
         inicio = 0
 
     for i in range(inicio, len(db.movimientos.MOVIMIENTOS[intId][0])):
-        print(f"Gasto: {db.movimientos.MOVIMIENTOS[intId][0][i]} corresponde al tipo de gasto: {db.movimientos.MOVIMIENTOS[intId][4][i]}")
+        print(f"Monto {db.movimientos.MOVIMIENTOS[intId][0][i]} corresponde al tipo de gasto: {db.movimientos.MOVIMIENTOS[intId][4][i]}")
 
     input("Presione enter para continuar ... ")
 
@@ -84,12 +86,12 @@ def creditos():
 def plazoFijo():
     pass
 
-def compraVentaDolar(intId):
+def compraVentaDolar(indiceUsuario):
     compraDolar = round(random.uniform(1300, 2000), 2)
     ventaDolar = round(compraDolar + random.uniform(25, 50), 2)
 
-    saldo = calcularSaldo(db.movimientos.MOVIMIENTOS, intId, 0)
-    saldoDolar = calcularSaldo(db.movimientos.MOVIMIENTOS, intId, 1)
+    saldo = calcularSaldo(db.movimientos.MOVIMIENTOS, indiceUsuario, 0)
+    saldoDolar = calcularSaldo(db.movimientos.MOVIMIENTOS, indiceUsuario, 1)
 
     compraOVenta = utilidades.elegirOpcion(
         "¿Qué desea hacer? ", 
@@ -99,22 +101,38 @@ def compraVentaDolar(intId):
 
     if compraOVenta == 0:
         montoDolar = float(input("Cuantos dolares quiere comprar: "))
-        montoDolar = validaciones.validarNumeroPositivo(montoDolar)
+        montoDolar = validaciones.validarMontoPositivo(montoDolar)
 
         montoPesos = montoDolar * compraDolar
         
         siONo = input(f"{montoDolar} dolares equivalen a {montoPesos} pesos. Desea continuar con la operacion? (Escriba S o N): ").upper().strip()
         if siONo == "S":
-            validaciones.validarTransaccion(db.movimientos.MOVIMIENTOS, intId, montoPesos, montoDolar, saldo, 1, 0)
+            validaciones.validarTransaccion(
+                db.movimientos.MOVIMIENTOS, 
+                indiceUsuario, 
+                montoOrigen=montoPesos, 
+                montoDestino=montoDolar, 
+                saldoOrigen=saldo, 
+                indiceDestino=db.movimientos.INDICE_DOLAR, 
+                indiceOrigen=db.movimientos.INDICE_PESOS
+            )
     elif compraOVenta == 1:
         montoDolar = float(input("Cuantos dolares quiere vender: "))
-        montoDolar = validaciones.validarNumeroPositivo(montoDolar)
+        montoDolar = validaciones.validarMontoPositivo(montoDolar)
 
         montoPesos = montoDolar * ventaDolar
 
         siONo = input(f"{montoDolar} dolares equivalen a {montoPesos} pesos. Desea continuar con la operacion? (Escriba S o N): ").upper().strip()
         if siONo == "S":
-            validaciones.validarTransaccion(db.movimientos.MOVIMIENTOS, intId, montoDolar, montoPesos, saldoDolar, 0, 1)
+            validaciones.validarTransaccion(
+                db.movimientos.MOVIMIENTOS, 
+                indiceUsuario, 
+                montoOrigen=montoDolar, 
+                montoDestino=montoPesos, 
+                saldoOrigen=saldoDolar, 
+                indiceDestino=db.movimientos.INDICE_PESOS, 
+                indiceOrigen=db.movimientos.INDICE_DOLAR
+            )
 
 def gastosClasificacion(intId, lstCategoria):
     saldo = 0
@@ -134,11 +152,14 @@ def listarUsuario():
     usuarios = db.usuarios.obtenerUsuarios()
     usuariosFiltro = [nombre for nombre in usuarios if nombre.lower().startswith(partNombre.lower()) ]
 
-    print("Usuarios encontrados")
-    for nombre in usuariosFiltro:
-        print(nombre)
-    input("Presione enter para continuar...")
-    
+    if usuariosFiltro:
+        for nombre in usuariosFiltro:
+            print("Usuarios encontrados")
+            print(nombre)
+            input("Presione enter para continuar...")
+    else:
+        print("No se encontraron usuarios")
+        input("Presione enter para continuar...")
 
-def salir(intNum):
-    print(f"Muchas Gracias {db.usuarios.obtenerNombreUsuario(intNum)} por usar nuestro programa.")
+def salir():
+    pass

@@ -5,21 +5,25 @@ def limpiarConsola():
 
 def elegirOpcion(prompt, listOpciones, preText = ""):
     '''
-        Le presenta al usuario un promt y una serie de opciones enumeradas del 1 - N. Devuelve el INDICE de la opción elegida.
+        Presenta al usuario un prompt y una serie de opciones enumeradas del 1 a N. Devuelve el INDICE de la opción elegida.
     '''
 
     while True:
         if preText != "":
             print(preText)
+
+        #mostrar opciones
         for i in range(len(listOpciones)):
             print(f"{i + 1}. {listOpciones[i]}")
 
         try:
             opcionIndice = int(input(prompt)) - 1
         except ValueError:
+            #valor por defecto
             opcionIndice = -1
-            
+        
         if opcionIndice >= 0 and opcionIndice < len(listOpciones):
+            #está dentro del rango
             break
         else:
             limpiarConsola()

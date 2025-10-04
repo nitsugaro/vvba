@@ -153,10 +153,10 @@ def listarUsuario():
     usuariosFiltro = [nombre for nombre in usuarios if nombre.lower().startswith(partNombre.lower()) ]
 
     if usuariosFiltro:
+        print("Usuarios encontrados")
         for nombre in usuariosFiltro:
-            print("Usuarios encontrados")
             print(nombre)
-            input("Presione enter para continuar...")
+        input("Presione enter para continuar...")
     else:
         print("No se encontraron usuarios")
         input("Presione enter para continuar...")

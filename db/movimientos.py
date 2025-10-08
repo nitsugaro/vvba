@@ -32,7 +32,7 @@ MOVIMIENTOS = [
 
 def crearMovimientos():
     # Agrega la entrada de movimientos para un nuevo usuario (estructura vacía).
-    MOVIMIENTOS.append([[]] * 5)
+    MOVIMIENTOS.append([[], [], [], [], []])
 
 # Conexiones: este módulo es usado por `funciones.py` para:
 # - calcular saldos (`calcularSaldo`) -> lee `MOVIMIENTOS`

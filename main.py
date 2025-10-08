@@ -29,7 +29,7 @@ def main():
         lambda: funciones.salir() # Opcion 7
         ]
 
-    opcion = 0
+    opcion = 0 
 
     largoOpciones = len(opciones) - 1
 

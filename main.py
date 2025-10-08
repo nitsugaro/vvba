@@ -1,10 +1,7 @@
-<<<<<<< HEAD
 import db
 import db.movimientos
 import db.usuarios
-=======
 import db.movimientos
->>>>>>> origin
 import funciones, utilidades
 
 def main():

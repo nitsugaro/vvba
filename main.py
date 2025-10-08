@@ -1,7 +1,7 @@
-import db.movimientos
-import funciones, utilidades
 import db
-
+import db.movimientos
+import db.usuarios
+import funciones, utilidades
 
 def main():
     while True:
@@ -39,7 +39,7 @@ def main():
         utilidades.limpiarConsola()
     else:
         utilidades.limpiarConsola()
-        print(f"Muchas gracias {funciones.usuario} por usar nuestro programa!")
+        print(f"Muchas gracias {db.usuarios.obtenerNombreUsuario(numeroUsuario)} por usar nuestro programa!")
         print("Saliendo, cerrando el programa...")
 
 if __name__ == "__main__":

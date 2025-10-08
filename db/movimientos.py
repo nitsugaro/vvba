@@ -4,6 +4,7 @@ INDICE_PLAZO_FIJO = 2
 INDICE_CREDITO = 3
 INDICE_TIPO_OPERACION = 4
 
+# Tipos de operación posibles (categorías de gasto/ingreso)
 TIPOS_OPERACIONES = [
     "Deposito",
     "Gastos",
@@ -14,7 +15,13 @@ TIPOS_OPERACIONES = [
     "Otros"
 ]
 
-# Cada usuario tendrá [movimientos, tenencia dólar, plazo fijo, crédito, tipo de gasto]
+# Estructura principal: MOVIMIENTOS es una lista por usuario.
+# Cada usuario es una lista con 5 elementos:
+# 0: lista de movimientos en pesos (positivo=ingreso, negativo=gasto)
+# 1: lista de tenencia en dólares
+# 2: lista de plazos fijos
+# 3: lista de créditos
+# 4: lista de tipos (categoría) correspondientes a cada movimiento en pesos
 MOVIMIENTOS = [
     [[1000, -200, -500], [100], [], [], ["Deposito", "Gastos", "Servicio"]],  # Usuario 0
     [[2000, -300], [50], [], [], ["Deposito", "Gastos"]],  # Usuario 1
@@ -24,8 +31,15 @@ MOVIMIENTOS = [
 ]
 
 def crearMovimientos():
+    # Agrega la entrada de movimientos para un nuevo usuario (estructura vacía).
     MOVIMIENTOS.append([[]] * 5)
 
+# Conexiones: este módulo es usado por `funciones.py` para:
+# - calcular saldos (`calcularSaldo`) -> lee `MOVIMIENTOS`
+# - registrar operaciones (`realizarOperacion`) -> usa `operacionMonto`
+# - ver movimientos (`verMovimientos`) -> lee `MOVIMIENTOS` para listar historiales
+
 def operacionMonto(indiceUsuario, monto, tipoOperacion):
+    # Registra un monto en pesos y guarda su tipo/categoría
     MOVIMIENTOS[indiceUsuario][INDICE_PESOS].append(monto)
     MOVIMIENTOS[indiceUsuario][INDICE_TIPO_OPERACION].append(tipoOperacion)

@@ -1,13 +1,12 @@
-import db.movimientos
 import db.usuarios
+import db.movimientos
 import validaciones, utilidades, random
 
 def iniciarSesion():
-    global usuario
     while True: 
         usuario = input("Ingrese su nombre de usuario: ")
         clave = input("Ingrese su contraseña: ")
-            
+                
         indiceUsuario = db.usuarios.obtenerIndexUsuario(usuario)
 
         if indiceUsuario != -1 and db.usuarios.verificarClave(indiceUsuario, clave):
@@ -22,7 +21,7 @@ def crearUsuario():
 
     nombreUsuario = input("Cree un nombre de usuario: ")
 
-    #TODO: se puede hacer que valide el valor del nombre y que no exista previamente en una sola función
+    #Todo se puede hacer que valide el valor del nombre y que no exista previamente en una sola función
     nombreUsuario = validaciones.validarNombreExiste(nombreUsuario)
     nombreUsuario = validaciones.validarNuevoUsuario(nombreUsuario)
 

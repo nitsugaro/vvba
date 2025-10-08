@@ -1,4 +1,3 @@
-import db
 import db.movimientos
 import db.usuarios
 

@@ -1,47 +1,17 @@
-import db
-import db.movimientos
-import db.usuarios
-import db.movimientos
+from database import usuarios
+import menu
 import funciones, utilidades
 
 def main():
     while True:
         utilidades.limpiarConsola()
-        opcionPrincipal = funciones.menuInicio()
-        
+        usuario = funciones.iniciarSesion()
+
         utilidades.limpiarConsola()
-        if opcionPrincipal == 0:
-            numeroUsuario = funciones.iniciarSesion()
-            break
-        elif opcionPrincipal == 1:
-            funciones.crearUsuario()
+        if usuario["rol"] == usuarios.USER_ROL:
+            menu.usuario(usuario["id"])
         else:
-            funciones.listarUsuario()
-
-    utilidades.limpiarConsola()
-    opciones = [
-        lambda: funciones.realizarOperacion(numeroUsuario), # Opcion 1
-        lambda: funciones.verMovimientos(numeroUsuario), # Opcion 2
-        lambda: funciones.creditos(), # Opcion 3
-        lambda: funciones.plazoFijo(), # Opcion 4
-        lambda: funciones.compraVentaDolar(numeroUsuario), # Opcion 5
-        lambda: funciones.gastosClasificacion(numeroUsuario, db.movimientos.TIPOS_OPERACIONES), # Opcion 6
-        lambda: funciones.salir() # Opcion 7
-        ]
-
-    opcion = 0 
-
-    largoOpciones = len(opciones) - 1
-
-    while opcion != largoOpciones:
-        opcion = funciones.menuPrincipal(numeroUsuario)
-        utilidades.limpiarConsola()
-        opciones[opcion]()
-        utilidades.limpiarConsola()
-    else:
-        utilidades.limpiarConsola()
-        print(f"Muchas gracias {db.usuarios.obtenerNombreUsuario(numeroUsuario)} por usar nuestro programa!")
-        print("Saliendo, cerrando el programa...")
+            menu.admin(usuario["id"])
 
 if __name__ == "__main__":
     try:

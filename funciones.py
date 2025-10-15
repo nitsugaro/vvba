@@ -1,6 +1,7 @@
 import color
 from database import usuarios, movimientos
-import validaciones, utilidades, random
+import validaciones, utilidades, random,os
+
 
 def iniciarSesion():
     banner = """
@@ -54,7 +55,34 @@ def menuAdmin(idUser):
         f"Bienvenido/a {usuarios.obtenerPorId(idUser)["username"]} al Banco VVBA (Vanguardia Virtual del Banco Argentino)\n: "
     )
 
+
+def generarToken():
+    #Genera el token apenas se inicia sesion y lo guarda en el archivo token.txt
+    token = str(random.randint(1000, 9999))
+    try:
+        with open("token.txt", "w", encoding="utf-8") as tk:#W para que se actualice cada vez que se inicie sesion
+            tk.write(token)
+        print(f"Token generado y guardado en token.txt: {token}")
+    except Exception as e:
+        print(f"Error al guardar el token: {e}")
+
+def tokenSeguridad(crear_token):
+  #Valida si el token que se ingresa para compararlo con el guardado en token.txt
+    try:
+        with open("token.txt", "r", encoding="utf-8") as tk:
+            token_guardado = tk.read().strip()
+        return crear_token == token_guardado
+    except Exception as e:
+        print(f"Error al leer el token: {e}")
+        return False
+
 def realizarOperacion(idUsuario):
+    crear_token=input("Ingrese el token de seguridad generado en el archivo token.txt: ")
+    
+    if not tokenSeguridad(crear_token):
+        print("Token inválido. Operación cancelada.")
+        return
+
     monto = utilidades.pedir(float, "Ingrese la cantidad de dinero: ", 
             validador=lambda monto: None if monto > 0 else "Ingrese un monto válido: "
     )
@@ -154,3 +182,4 @@ def listarUsuario():
     else:
         print("No se encontraron usuarios")
         input("Presione enter para continuar...")
+

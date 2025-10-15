@@ -3,6 +3,9 @@ import menu
 import funciones, utilidades
 
 def main():
+    # Generar el token al iniciar sesion
+    funciones.generarToken()
+    
     while True:
         utilidades.limpiarConsola()
         usuario = funciones.iniciarSesion()

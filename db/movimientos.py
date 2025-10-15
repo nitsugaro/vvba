@@ -31,7 +31,7 @@ MOVIMIENTOS = [
 ]
 
 def crearMovimientos():
-MOVIMIENTOS.append([[], [], [], [], []])
+    MOVIMIENTOS.append([[], [], [], [], []])
 
 # Conexiones: este módulo es usado por `funciones.py` para:
 # - calcular saldos (`calcularSaldo`) -> lee `MOVIMIENTOS`

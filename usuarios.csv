@@ -1,4 +1,4 @@
 id;username;nombre;rol;activo
 1;ana;ana;USER;true
-5;carlitos;ana;ADMIN;true
-8;castro;ana;ADMIN;true
+5;carlitos;carlitos;ADMIN;true
+8;castro;castro;ADMIN;true

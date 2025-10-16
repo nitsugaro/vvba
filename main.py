@@ -4,6 +4,9 @@ import funciones, utilidades
 import color
 
 def main():
+    # Generar el token al iniciar sesion
+    funciones.generarToken()
+    
     while True:
         try:
             utilidades.limpiarConsola()
@@ -21,7 +24,7 @@ def main():
             exit = utilidades.validarInputs(
                 tipo=str, 
                 prompt="¿Esta seguro que desea interrumpir el programa? (S/N): ", 
-                validador=lambda s: None if s.lower() == "s" or s.lower() == "n" else "(S/N): "
+                validador=lambda s: None if s.lower() == "s" or s.lower() == "n" else "Porfavor, ingrese un valor valido (S/N): "
             ).lower()
             if exit == "s":
                 print(color.negrita(color.gris("Cerrando el programa...")))

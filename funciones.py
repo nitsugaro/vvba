@@ -30,7 +30,7 @@ def crearUsuario():
     '''
         Pide los inputs necesarios para crear un usuario y clave, inicializando a su vez la matriz de movimientos.
     '''
-    username = utilidades.pedir(
+    username = utilidades.validarInputs(
         str, 
         "Ingrese un nombre de usuario: ", 
         validador=lambda username: 
@@ -50,12 +50,12 @@ def crearUsuario():
 def menuAdmin(idUser):
     return utilidades.elegirOpcion(
         "Elegí una opción: ", 
-        ["Realizar operación", "Ver movimientos", "Creditos", "Plazo fijo", "Compra/Venta Dolar", "Gastos por clasificacion", "Salir"],
+        ["Realizar operación", "Ver movimientos", "Creditos", "Plazo fijo", "Compra/Venta Dolar", "Gastos por clasificacion", "Salir", "Cerrar Sesion"],
         f"Bienvenido/a {usuarios.obtenerPorId(idUser)["username"]} al Banco VVBA (Vanguardia Virtual del Banco Argentino)\n: "
     )
 
 def realizarOperacion(idUsuario):
-    monto = utilidades.pedir(float, "Ingrese la cantidad de dinero: ", 
+    monto = utilidades.validarInputs(float, "Ingrese la cantidad de dinero: ", 
             validador=lambda monto: None if monto > 0 else "Ingrese un monto válido: "
     )
     tipoOpIndice = utilidades.elegirOpcion("Elegí el tipo de operacion: ", movimientos.TIPOS_OPERACIONES)
@@ -99,7 +99,7 @@ def compraVentaDolar(idUser):
     )
 
     if compraOVenta == 0:
-        montoDolar = utilidades.pedir(
+        montoDolar = utilidades.validarInputs(
             float, 
             "Cuántos dolares desea comprar: ", 
             validador=lambda monto: None if monto > 0 else "Ingrese un monto mayor a 0: "
@@ -118,7 +118,7 @@ def compraVentaDolar(idUser):
                 tipoMonedaDestino=movimientos.DOLARES,
             )
     elif compraOVenta == 1:
-        montoDolar = utilidades.pedir(
+        montoDolar = utilidades.validarInputs(
             float, "Cuántos dolares desea vender: ", 
             validador=lambda monto: None if monto > 0 else "Ingrese un monto mayor a 0: "
         )
@@ -154,3 +154,8 @@ def listarUsuario():
     else:
         print("No se encontraron usuarios")
         input("Presione enter para continuar...")
+
+def saludoFin(idUser):
+    utilidades.limpiarConsola()
+    utilidades.printPausa(f"Muchas gracias {color.azul(usuarios.obtenerPorId(idUser)["nombre"])} por usar nuestro programa!",pausa=0.01)
+    input(color.negrita(color.gris("Presione enter para continuar...")))

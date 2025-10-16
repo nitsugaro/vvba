@@ -4,9 +4,8 @@ import funciones
 import utilidades
 
 def menuBasico(idUser, opciones, obtenerTexto: lambda: "Bienvenido a VVBA !"):
-    largoOpciones = len(opciones)
     opcion = 0
-    while opcion != largoOpciones - 1:
+    while True:
         opcion = utilidades.elegirOpcion(
             "Elegí una opción: ", 
             list(map(lambda elemento: elemento["opcion"], opciones)), #tomamos los valores de los prompts
@@ -16,9 +15,10 @@ def menuBasico(idUser, opciones, obtenerTexto: lambda: "Bienvenido a VVBA !"):
         utilidades.limpiarConsola()
         opciones[opcion]["funcion"]()
         utilidades.limpiarConsola()
-    else:
-        utilidades.printPausa(f"Muchas gracias {color.azul(usuarios.obtenerPorId(idUser)["nombre"])} por usar nuestro programa!",pausa=0.01)
-        input(color.negrita(color.gris("Presione enter para continuar...")))
+        if opcion == 6:
+            break
+        elif opcion == 7:
+            return -1
 
 def usuario(idUser):
     opciones = [
@@ -28,10 +28,11 @@ def usuario(idUser):
         { "opcion": "Plazo fijo", "funcion": lambda: funciones.plazoFijo() }, # 4
         { "opcion": "Compra/Venta Dolar", "funcion": lambda: funciones.compraVentaDolar(idUser) }, # 5
         { "opcion": "Gastos por clasificacion", "funcion": lambda: funciones.gastosClasificacion(idUser) }, # 6
-        { "opcion": "Cerrar Sesión", "funcion": lambda: None } # 7
+        { "opcion": "Cerrar Sesión", "funcion": lambda: funciones.saludoFin(idUser) }, # 7
+        { "opcion": "Salir", "funcion": lambda: funciones.saludoFin(idUser) } # 8
     ]
 
-    menuBasico(
+    return menuBasico(
         idUser,
         opciones, 
         lambda: f"Bienvenido/a {color.azul(usuarios.obtenerPorId(idUser)['username'])} al Banco VVBA "
@@ -47,7 +48,7 @@ def admin(idUser):
         { "opcion": "Cerrar Sesión", "funcion": lambda: None } # 3
     ]
 
-    menuBasico(
+    return menuBasico(
         idUser, 
         opciones, 
         lambda: f"Bienvenido/a {color.azul(usuarios.obtenerPorId(idUser)['username'])} al Banco VVBA (Vanguardia Virtual del Banco Argentino)\n"

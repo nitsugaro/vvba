@@ -6,7 +6,7 @@ import color
 def limpiarConsola():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def pedir(tipo=str, prompt="", validador=lambda x: None):
+def validarInputs(tipo=str, prompt="", validador=lambda x: None):
     while True:
         try:
             valor = tipo(input(prompt))

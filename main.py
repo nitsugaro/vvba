@@ -1,51 +1,34 @@
-import db
-import db.movimientos
-import db.usuarios
-import db.movimientos
+from database import usuarios
+import menu
 import funciones, utilidades
+import color
 
 def main():
+    # Generar el token al iniciar sesion
+    funciones.generarToken()
+    
     while True:
-        utilidades.limpiarConsola()
-        opcionPrincipal = funciones.menuInicio()
-        
-        utilidades.limpiarConsola()
-        if opcionPrincipal == 0:
-            numeroUsuario = funciones.iniciarSesion()
-            break
-        elif opcionPrincipal == 1:
-            funciones.crearUsuario()
-        else:
-            funciones.listarUsuario()
+        try:
+            utilidades.limpiarConsola()
+            usuario = funciones.iniciarSesion()
 
-    utilidades.limpiarConsola()
-    opciones = [
-        lambda: funciones.realizarOperacion(numeroUsuario), # Opcion 1
-        lambda: funciones.verMovimientos(numeroUsuario), # Opcion 2
-        lambda: funciones.creditos(), # Opcion 3
-        lambda: funciones.plazoFijo(), # Opcion 4
-        lambda: funciones.compraVentaDolar(numeroUsuario), # Opcion 5
-        lambda: funciones.gastosClasificacion(numeroUsuario, db.movimientos.TIPOS_OPERACIONES), # Opcion 6
-        lambda: funciones.salir() # Opcion 7
-        ]
-
-    opcion = 0
-
-    largoOpciones = len(opciones) - 1
-
-    while opcion != largoOpciones:
-        opcion = funciones.menuPrincipal(numeroUsuario)
-        utilidades.limpiarConsola()
-        opciones[opcion]()
-        utilidades.limpiarConsola()
-    else:
-        utilidades.limpiarConsola()
-        print(f"Muchas gracias {db.usuarios.obtenerNombreUsuario(numeroUsuario)} por usar nuestro programa!")
-        print("Saliendo, cerrando el programa...")
+            utilidades.limpiarConsola()
+            if usuario["rol"] == usuarios.USER_ROL:
+                salir = menu.usuario(usuario["id"])
+            else:
+                menu.admin(usuario["id"])
+            if salir == -1:
+                break
+        except KeyboardInterrupt:
+            utilidades.limpiarConsola()
+            exit = utilidades.validarInputs(
+                tipo=str, 
+                prompt="¿Esta seguro que desea interrumpir el programa? (S/N): ", 
+                validador=lambda s: None if s.lower() == "s" or s.lower() == "n" else "Porfavor, ingrese un valor valido (S/N): "
+            ).lower()
+            if exit == "s":
+                print(color.negrita(color.gris("Cerrando el programa...")))
+                break
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        utilidades.limpiarConsola()
-        print("Saliendo, cerrando el programa...")
+    main()

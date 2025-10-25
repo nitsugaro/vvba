@@ -1,5 +1,5 @@
 import validaciones
-
+from datetime import datetime
 
 def convertirLineaDict(linea, nombresCampos):
     '''
@@ -89,3 +89,27 @@ def crearRegistro(nombreTabla, registro, condicionLambda):
             arch.write(f"{valores}\n")
     except OSError as msg:
         print(f"ERROR abriendo el archivo: {msg}")
+
+def crearPlazoFijo(idUser, montoInvertido, porcentaje, plazoDias, estado):
+    registro = {
+        "idUser": idUser,
+        "monto": montoInvertido,
+        "porcentaje": porcentaje,
+        "plazoDias": plazoDias,
+        "fecha": datetime.now().strftime("%Y-%m-%d"),
+        "estado": estado
+        }
+
+    crearRegistro("plazoFijo", registro, condicionLambda=lambda r: True)
+
+def buscarUltimoPF(idUser):
+    plazosUsuario = buscarRegistros("plazoFijo", lambda r: int(r["idUsuario"]) == idUser)
+
+    if plazosUsuario:
+        ultimoPf = plazosUsuario[-1]
+    else:
+        ultimoPf = None
+
+    if ultimoPf and int(ultimoPf["idUsuario"]) == idUser and ultimoPf["estado"] == "ACTIVO": 
+        input("Ya tiene un plazo fijo activo. Debe esperar a que venza para crear uno nuevo ... ") 
+        return ultimoPf

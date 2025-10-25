@@ -1,5 +1,5 @@
-import time
-import os
+import time, os
+from datetime import datetime, timedelta
 
 import color
 
@@ -52,3 +52,10 @@ def printPausa(texto, nuevaLinea=True, pausa = 0.02):
         time.sleep(pausa)
     if nuevaLinea:
         print()
+
+def obtenerFechasPlazo(plazo):
+    fechaInicio = datetime.strptime(plazo["fecha"], "%Y-%m-%d")
+    return fechaInicio + timedelta(days=int(plazo["plazoDias"]))
+
+def calcularInteres(intMoto, intTasa, num):
+    return intMoto + intMoto * intTasa / num

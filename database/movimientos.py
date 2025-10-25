@@ -1,5 +1,4 @@
-import random
-import time
+import random, time
 from database import db
 from datetime import datetime
 
@@ -29,9 +28,17 @@ TIPOS_OPERACIONES = [
     OTROS
 ]
 
+####### TIPOS DE PLAZOS FIJOS #######
+TIPOS_PF = [
+    ("100'%' a 365 días", 100, 365),
+    ("50'%' a 182 días", 50, 182),
+    ("25'%' a 90 días", 25, 90),
+    ("Volver al menu principal", 0, 0)
+    ]
+
 def realizarMovimiento(idUsuario, monto, tipoMoneda, tipoOperacion):
-    ahora = int(time.time() * 1000)        
-    aleatorio = random.randint(0, 999)        
+    ahora = int(time.time() * 1000) 
+    aleatorio = random.randint(0, 999) 
     comprobanteId = f"VVBA{ahora}{aleatorio:03d}"
     
     registro = {

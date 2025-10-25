@@ -1,7 +1,5 @@
-import color
+import color, utilidades, funciones
 from database import movimientos, usuarios
-import funciones
-import utilidades
 
 def menuBasico(idUser, opciones, obtenerTexto: lambda: "Bienvenido a VVBA !"):
     opcion = 0
@@ -21,11 +19,13 @@ def menuBasico(idUser, opciones, obtenerTexto: lambda: "Bienvenido a VVBA !"):
             return -1
 
 def usuario(idUser):
+    funciones.verificarVencimientosPlazoFijo(idUser)
+    
     opciones = [
         { "opcion": "Realizar operación", "funcion": lambda: funciones.realizarOperacion(idUser) }, # 1
         { "opcion": "Ver movimientos", "funcion": lambda: funciones.verMovimientos(idUser) }, # 2
         { "opcion": "Créditos", "funcion": lambda: funciones.creditos() }, # 3
-        { "opcion": "Plazo fijo", "funcion": lambda: funciones.plazoFijo() }, # 4
+        { "opcion": "Plazo fijo", "funcion": lambda: funciones.plazoFijo(idUser) }, # 4
         { "opcion": "Compra/Venta Dolar", "funcion": lambda: funciones.compraVentaDolar(idUser) }, # 5
         { "opcion": "Gastos por clasificacion", "funcion": lambda: funciones.gastosClasificacion(idUser) }, # 6
         { "opcion": "Cerrar Sesión", "funcion": lambda: funciones.saludoFin(idUser) }, # 7

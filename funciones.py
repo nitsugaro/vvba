@@ -1,7 +1,6 @@
-import color
-from database import usuarios, movimientos
-import validaciones, utilidades, random,os
-
+import color, validaciones, utilidades, random
+from database import usuarios, movimientos, db
+from datetime import datetime
 
 def iniciarSesion():
     banner = """
@@ -110,8 +109,53 @@ def verMovimientos(intId):
 def creditos():
     pass
 
-def plazoFijo():
-    pass
+def plazoFijo(idUser):
+    if db.buscarUltimoPF(idUser):
+        return None
+
+    saldoPesos = movimientos.obtenerSaldoPesos(idUser)
+
+    indice = utilidades.elegirOpcion(
+        "Elija una opcion: ", 
+        [op[0] for op in movimientos.TIPOS_PF], 
+        "Seleccione el plazo fijo que desea realizar: "
+        )
+    
+    if indice == 3:
+        return None
+    else:
+        texto, porcentaje, plazoDias = movimientos.TIPOS_PF[indice]
+
+    montoInvertido = utilidades.pedir(
+        int, 
+        f"Ingrese el monto a invertir (máximo ${saldoPesos}): ",
+        validador=lambda monto: None if monto > 0 else f"Ingrese un monto mayor a 0: "
+        )
+        
+    movimientos.realizarMovimiento(idUser, -montoInvertido, "PESOS", "PLAZOFIJOACTIVO")
+
+    db.crearPlazoFijo(idUser, montoInvertido, porcentaje, plazoDias, "ACTIVO")
+
+def verificarVencimientosPlazoFijo(idUser):
+    plazosUsuario = db.buscarRegistros("plazoFijo", lambda r: int(r["idUsuario"]) == idUser)
+    
+    if not plazosUsuario or plazosUsuario[-1]["estado"] != "ACTIVO":
+        return None
+
+    ultimoPf = plazosUsuario[-1]
+
+    fechaVencimiento = utilidades.obtenerFechasPlazo(ultimoPf)
+
+    if datetime.now() >= fechaVencimiento:
+        monto = float(ultimoPf["montoInvertido"])
+        tasa = float(ultimoPf["tasa"])
+        total = utilidades.calcularInteres(monto, tasa, 100)
+
+        movimientos.realizarMovimiento(idUser, total, "PESOS", "PLAZOFIJOFINALIZADO")
+        
+        db.crearPlazoFijo(idUser, monto, tasa, ultimoPf["plazoDias"], "FINALIZADO")
+
+        input(f"Plazo fijo vencido: se acreditaron ${total:.2f} ... ")
 
 def compraVentaDolar(idUser):
     compraDolar = round(random.uniform(1300, 2000), 2)

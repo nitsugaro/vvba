@@ -1,7 +1,5 @@
 from database import usuarios
-import menu
-import funciones, utilidades
-import color
+import menu, funciones, utilidades, color
 
 def main():
     # Generar el token al iniciar sesion

@@ -129,7 +129,7 @@ def plazoFijo(idUser):
     montoInvertido = utilidades.validarInputs(
         int, 
         f"Ingrese el monto a invertir (máximo ${saldoPesos}): ",
-        validador=lambda monto: None if monto > 0 else f"Ingrese un monto mayor a 0: "
+        validador=lambda monto: None if monto > 0 and monto < saldoPesos else f"Ingrese un monto mayor a 0 y menor a {saldoPesos}: " 
         )
         
     movimientos.realizarMovimiento(idUser, -montoInvertido, "PESOS", "PLAZOFIJOACTIVO")

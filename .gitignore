@@ -418,3 +418,8 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+movimientos.csv
+plazoFijo.csv
+usuarios.csv
+token.txt

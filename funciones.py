@@ -126,7 +126,7 @@ def plazoFijo(idUser):
     else:
         texto, porcentaje, plazoDias = movimientos.TIPOS_PF[indice]
 
-    montoInvertido = utilidades.pedir(
+    montoInvertido = utilidades.validarInputs(
         int, 
         f"Ingrese el monto a invertir (máximo ${saldoPesos}): ",
         validador=lambda monto: None if monto > 0 else f"Ingrese un monto mayor a 0: "

@@ -110,7 +110,7 @@ def pagar(idCredito, monto, debitarDeCuenta=False):
     """Paga cuotas en cascada con estado agregado (sin cronograma).
     - Calcula interés del período como saldo * tasaMensual y amortización = cuotaFija - interés.
     - Ajusta la última cuota si amortización > saldo.
-    - Completa cuota si alcanza; si no, queda como pago parcial.
+    - Completa cuota si alcanza, si no, queda como pago parcial.
     Devuelve dict resumen.
     """
     pago = r2(monto)

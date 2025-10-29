@@ -192,12 +192,13 @@ def creditosF(idUsuario):
         op = utilidades.elegirOpcion("Elegí una opción: ", [
             "Crear préstamo",
             "Mis préstamos",
-            "Ver préstamo por ID",
+            #"Ver préstamo por ID",
             "Pagar",
             "Volver"
         ])
 
         if op == 0:
+            utilidades.limpiarConsola()
             capital = utilidades.validarInputs(float, "Capital: ", lambda v: None if v>0 else "Debe ser > 0")
             tasa    = utilidades.validarInputs(float, "Tasa mensual (0.04=4%): ", lambda v: None if v>=0 else "No puede ser negativa")
             meses   = utilidades.validarInputs(int,   "Plazo en meses: ", lambda v: None if v>0 else "Debe ser > 0")
@@ -207,23 +208,26 @@ def creditosF(idUsuario):
         elif op == 1:
             creditosL = creditos.listarPorUsuario(idUsuario)
             if not creditosL:
+                utilidades.limpiarConsola()
                 print("No tenes creditos registrados...")
+                print("Enter para volver al menu de creditos...")
             else:
                 utilidades.limpiarConsola()
                 for r in creditosL:
-                    print(f'ID del Prestamo {r["idPrestamos"]}\nCapital: {r["capital"]}\nCuota: {r["cuotaFija"]}\nSaldo: {r["saldoPendiente"]}\nEstado: {r["estado"]}')
+                    print(f'ID del Prestamo {r["idUsuario"]}\nCapital: {r["capital"]}\nCuota: {r["cuotaFija"]}\nSaldo: {r["saldoPendiente"]}\nEstado: {r["estado"]}')
                 input("Enter para volver al menu de creditos...")
 
-        elif op == 2:
-            pid = utilidades.validarInputs(int, "ID de credito: ")
-            print(creditos.obtenerPorId(pid) or "No encontrado")
-            input("Enter...")
+        #elif op == 2:
+            #pid = utilidades.validarInputs(int, "ID de credito: ")
+            #print(creditos.obtenerPorId(pid) or "No encontrado")
+            #input("Enter...")
 
-        elif op == 3:
+        elif op == 2:
+            utilidades.limpiarConsola()
             pid = utilidades.validarInputs(int,   "ID de credito: ")
             monto = utilidades.validarInputs(float,"Monto a pagar: ", lambda v: None if v>0 else "Debe ser > 0")
             print(creditos.pagar(pid, monto, debitarDeCuenta=False))
-            input("Enter...")
+            input("Enter para volver al menu de creditos...")
 
         else:
             break

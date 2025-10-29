@@ -24,7 +24,7 @@ def usuario(idUser):
     opciones = [
         { "opcion": "Realizar operación", "funcion": lambda: funciones.realizarOperacion(idUser) }, # 1
         { "opcion": "Ver movimientos", "funcion": lambda: funciones.verMovimientos(idUser) }, # 2
-        { "opcion": "Créditos", "funcion": lambda: funciones.creditos() }, # 3
+        { "opcion": "Créditos", "funcion": lambda: funciones.creditosF(idUser) }, # 3
         { "opcion": "Plazo fijo", "funcion": lambda: funciones.plazoFijo() }, # 4
         { "opcion": "Compra/Venta Dolar", "funcion": lambda: funciones.compraVentaDolar(idUser) }, # 5
         { "opcion": "Gastos por clasificacion", "funcion": lambda: funciones.gastosClasificacion(idUser) }, # 6

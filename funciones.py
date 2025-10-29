@@ -1,7 +1,5 @@
-import color
-from database import usuarios, movimientos
-import validaciones, utilidades, random,os
-
+from database import creditos, usuarios, movimientos
+import color, validaciones, utilidades, random
 
 def iniciarSesion():
     banner = """
@@ -107,8 +105,8 @@ def verMovimientos(intId):
 
     input("Presione enter para continuar ... ")
 
-def creditos():
-    pass
+#def credito():
+    #pass
 
 def plazoFijo():
     pass
@@ -187,3 +185,45 @@ def saludoFin(idUser):
     utilidades.limpiarConsola()
     utilidades.printPausa(f"Muchas gracias {color.azul(usuarios.obtenerPorId(idUser)["nombre"])} por usar nuestro programa!",pausa=0.01)
     input(color.negrita(color.gris("Presione enter para continuar...")))
+
+def creditosF(idUsuario):
+    while True:
+        utilidades.limpiarConsola()
+        op = utilidades.elegirOpcion("Elegí una opción: ", [
+            "Crear préstamo",
+            "Mis préstamos",
+            "Ver préstamo por ID",
+            "Pagar",
+            "Volver"
+        ])
+
+        if op == 0:
+            capital = utilidades.validarInputs(float, "Capital: ", lambda v: None if v>0 else "Debe ser > 0")
+            tasa    = utilidades.validarInputs(float, "Tasa mensual (0.04=4%): ", lambda v: None if v>=0 else "No puede ser negativa")
+            meses   = utilidades.validarInputs(int,   "Plazo en meses: ", lambda v: None if v>0 else "Debe ser > 0")
+            pid = creditos.crearCredito(idUsuario, capital, tasa, meses, acreditarEnCuenta=False)
+            input(f"Credito creado ID {pid}. Enter...")
+
+        elif op == 1:
+            creditosL = creditos.listarPorUsuario(idUsuario)
+            if not creditosL:
+                print("No tenes creditos registrados...")
+            else:
+                utilidades.limpiarConsola()
+                for r in creditosL:
+                    print(f'ID del Prestamo {r["idPrestamos"]}\nCapital: {r["capital"]}\nCuota: {r["cuotaFija"]}\nSaldo: {r["saldoPendiente"]}\nEstado: {r["estado"]}')
+                input("Enter para volver al menu de creditos...")
+
+        elif op == 2:
+            pid = utilidades.validarInputs(int, "ID de credito: ")
+            print(creditos.obtenerPorId(pid) or "No encontrado")
+            input("Enter...")
+
+        elif op == 3:
+            pid = utilidades.validarInputs(int,   "ID de credito: ")
+            monto = utilidades.validarInputs(float,"Monto a pagar: ", lambda v: None if v>0 else "Debe ser > 0")
+            print(creditos.pagar(pid, monto, debitarDeCuenta=False))
+            input("Enter...")
+
+        else:
+            break

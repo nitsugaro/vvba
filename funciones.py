@@ -1,5 +1,5 @@
 import color, validaciones, utilidades, random
-from database import usuarios, movimientos, db
+from database import usuarios, movimientos, db, creditos
 from datetime import datetime
 
 def iniciarSesion():
@@ -106,8 +106,98 @@ def verMovimientos(intId):
 
     input("Presione enter para continuar ... ")
 
-def creditos():
-    pass
+def creditosF(idUsuario):
+    while True:
+        utilidades.limpiarConsola()
+        op = utilidades.elegirOpcion("Elegí una opción: ", [
+            "Pedir un credito",
+            "Mis creditos",
+            #"Ver préstamo por ID",
+            "Pagar",
+            "Volver"
+        ])
+
+        if op == 0:
+            utilidades.limpiarConsola()
+            capital = utilidades.validarInputs(float, "Capital: ", lambda v: None if v>0 else "Debe ser > 0")
+            tasa    = utilidades.validarInputs(float, "Tasa mensual (0.04=4%): ", lambda v: None if v>=0 else "No puede ser negativa")
+            meses   = utilidades.validarInputs(int,   "Plazo en meses: ", lambda v: None if v>0 else "Debe ser > 0")
+            pid = creditos.crearCredito(idUsuario, capital, tasa, meses, acreditarEnCuenta=True)
+            input(f"Credito creado ID {pid}. Enter...")
+
+        elif op == 1:
+            creditosL = creditos.listarPorUsuario(idUsuario)
+            if not creditosL:
+                utilidades.limpiarConsola()
+                print("No tenes creditos registrados...")
+                print("Enter para volver al menu de creditos...")
+            else:
+                utilidades.limpiarConsola()
+                for r in creditosL:
+                    print(f'ID del Credito: {r["idUsuario"]}\nCapital: {r["capital"]}\nCuota: {r["cuotaFija"]}\nSaldo: {r["saldoPendiente"]}\nEstado: {r["estado"]}')
+                input("Enter para volver al menu de creditos...")
+
+        #elif op == 2:
+            #pid = utilidades.validarInputs(int, "ID de credito: ")
+            #print(creditos.obtenerPorId(pid) or "No encontrado")
+            #input("Enter...")
+
+        elif op == 2:
+            utilidades.limpiarConsola()
+            pid = utilidades.validarInputs(int,   "ID de credito: ")
+            monto = utilidades.validarInputs(float,"Monto a pagar: ", lambda v: None if v>0 else "Debe ser > 0")
+
+            # Verificar que el crédito existe y pertenece al usuario
+            creditoSel = creditos.obtenerPorId(pid)
+            if creditoSel is None:
+                print("Crédito no encontrado. Verifique el ID e intente nuevamente.")
+                input("Presione Enter para volver al menú de créditos...")
+                continue
+
+            # Asegurar que el crédito corresponde al usuario logueado
+            if int(creditoSel["idUsuario"]) != int(idUsuario):
+                print("El ID ingresado no corresponde a un crédito suyo.")
+                input("Presione Enter para volver al menú de créditos...")
+                continue
+
+            # Verificar estado del préstamo
+            if creditoSel.get("estado") != "ACTIVO":
+                print(f'El crédito está en estado "{creditoSel.get("estado")}". No es posible pagarlo.')
+                input("Presione Enter para volver al menú de créditos...")
+                continue
+
+            # Verificación de saldo antes de intentar debitar de la cuenta del usuario
+            saldoPesos = movimientos.obtenerSaldoPesos(idUsuario)
+            if saldoPesos < monto:
+                print(f"Saldo insuficiente. Saldo actual: ${round(saldoPesos,2)}")
+                input("Presione Enter para volver al menú de créditos...")
+            else:
+                # Confirmación antes de debitar de la cuenta (forzar respuesta S o N)
+                while True:
+                    confirmar = input(f"Confirma débito de ${round(monto,2)} de su cuenta? (S/N): ").upper().strip()
+                    if confirmar in ('S', 'N'):
+                        break
+                    print("Respuesta inválida. Ingrese 'S' para confirmar o 'N' para cancelar.")
+
+                if confirmar == 'S':
+                    # Llama a pagar indicando que debe debitar de la cuenta
+                    utilidades.limpiarConsola()
+                    resultadoPago = creditos.pagar(pid, monto, debitarDeCuenta=True)
+                    print("\nResultado del pago:")
+                    print(f"Monto aplicado: ${round(resultadoPago['aplicado'], 2)}")
+                    print(f"Cuotas completadas: {resultadoPago['cuotasCompletadas']}")
+                    if resultadoPago['resto'] > 0:
+                        print(f"Monto sobrante: ${round(resultadoPago['resto'], 2)}")
+                    print(f"Saldo pendiente: ${round(resultadoPago['saldoPendiente'], 2)}")
+                    print(f"Próxima cuota: {resultadoPago['cuotaActual']}")
+                    print(f"Estado del crédito: {resultadoPago['estado']}")
+                    input("\nPresione Enter para volver al menú de créditos...")
+                else:
+                    print("Operación cancelada. No se efectuó el débito.")
+                    input("Presione Enter para volver al menú de créditos...")
+
+        else:
+            break
 
 def plazoFijo(idUser):
     if db.buscarUltimoPF(idUser):

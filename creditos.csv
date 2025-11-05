@@ -1,0 +1,2 @@
+id;idUsuario;capital;tasaMensual;plazoMeses;cuotaFija;cuotaActual;pagadoCuota;saldoPendiente;estado
+1;1;50000.0;2.0;5;100413.22;2;79199.78;49586.78;ACTIVO

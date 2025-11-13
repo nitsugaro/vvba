@@ -24,7 +24,7 @@ def usuario(idUser):
     opciones = [
         { "opcion": "Realizar operación", "funcion": lambda: funciones.realizarOperacion(idUser) }, # 1
         { "opcion": "Ver movimientos", "funcion": lambda: funciones.verMovimientos(idUser) }, # 2
-        { "opcion": "Créditos", "funcion": lambda: funciones.creditosF(idUser) }, # 3
+        { "opcion": "Créditos", "funcion": lambda: funciones.creditos() }, # 3
         { "opcion": "Plazo fijo", "funcion": lambda: funciones.plazoFijo(idUser) }, # 4
         { "opcion": "Compra/Venta Dolar", "funcion": lambda: funciones.compraVentaDolar(idUser) }, # 5
         { "opcion": "Gastos por clasificacion", "funcion": lambda: funciones.gastosClasificacion(idUser) }, # 6
@@ -45,11 +45,25 @@ def admin(idUser):
     opciones = [
         { "opcion": "Listar Usuarios", "funcion": lambda: funciones.listarUsuario() }, # 1
         { "opcion": "Crear Nuevo Usuario", "funcion": lambda: funciones.crearUsuario() }, # 2
-        { "opcion": "Cerrar Sesión", "funcion": lambda: None } # 3
+        { "opcion": "Ver logs", "funcion": lambda: menuLogs(idUser) }, # 3
+        { "opcion": "Cerrar Sesión", "funcion": lambda: None } # 4
+        # 4
     ]
 
     return menuBasico(
         idUser, 
         opciones, 
         lambda: f"Bienvenido/a {color.azul(usuarios.obtenerPorId(idUser)['username'])} al Banco VVBA (Vanguardia Virtual del Banco Argentino)\n"
+    )
+
+def menuLogs(idUser):
+    opciones = [
+        { "opcion": "Ver Movimientos", "funcion": lambda: funciones.verMovimientosAdmin()}, # 1
+        { "opcion": "Buscar por id", "funcion": lambda: funciones.buscarMovimientosPorId() }, # 2
+        { "opcion": "Cerrar Sesión", "funcion": lambda: None } # 3
+    ]
+
+    return menuBasico( idUser, 
+        opciones, 
+        lambda: f"Seleccione una de las siguientes opciones\n"
     )

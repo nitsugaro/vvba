@@ -6,6 +6,7 @@ def main():
     funciones.generarToken()
     
     while True:
+        
         try:
             utilidades.limpiarConsola()
             usuario = funciones.iniciarSesion()

@@ -15,7 +15,7 @@ def validarInputs(tipo=str, prompt="", validador=lambda x: None):
                 return valor
             prompt = error + " "  # usa el mensaje de error como nuevo prompt
         except ValueError:
-            prompt = f"Valor inválido. {prompt}"
+            print("Valor inválido.", end="")
 
 def elegirOpcion(prompt, listOpciones, preText = ""):
     '''

@@ -2,9 +2,6 @@ from database import usuarios
 import menu, funciones, utilidades, color
 
 def main():
-    # Generar el token al iniciar sesion
-    funciones.generarToken()
-    
     while True:
         
         try:

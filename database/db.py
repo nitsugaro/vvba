@@ -37,11 +37,18 @@ def buscarUltimoRegistro(nombreTabla):
     """
 
     with open(nombreTabla + ".csv", "rb") as arch:
-        nombresCampos = arch.readline().strip().split(';')
+        lineas = arch.readlines()
+        if len(lineas) == 0 or len(lineas) == 1:
+            return None 
+
+        nombresCampos = arch.readline().decode().strip().split(';')
         arch.seek(-2, 2)  # ir casi al final ej: 'hol<ACA>a\n'
         while arch.read(1) != b'\n':  # buscar el salto de línea anterior
             arch.seek(-2, 1)  # retroceder para leer el byte anterior
         linea = arch.readline().decode().strip()  # leer y decodificar la última línea
+
+        if linea == "":
+            return None
 
         return convertirLineaDict(linea, nombresCampos)
 
